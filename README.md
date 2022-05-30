@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="400" src="img\LOGO_v1_blue.png" alt="SKair logo">
+  <img width="350" src="img\LOGO_v1_blue.png" alt="SKair logo">
 </p>
 
 # Skair

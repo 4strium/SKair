@@ -1,5 +1,5 @@
-from esp_ble_uart import *
 from time import *
+import bluetooth_tech
 import uSGP30
 import sys
 import machine
@@ -54,17 +54,14 @@ pBUZZ = machine.Pin(I2C_BUZZ_GPIO, machine.Pin.OUT)
 pBUZZ.value(0)
 
 # Définition du réseau Bluetooth Low Energy :
-nom = 'SKair'
-UUID_UART = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
-UUID_TX = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
-UUID_RX = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
+ble = ESP32_BLE('SKair')
 
 uart = Bleuart(nom, UUID_UART, UUID_TX, UUID_RX)
 uart.close()
 
 # Fonction pour envoyer des données :
 def envoi(val_tx):
-    uart.write(str(val_tx))  
+    send(str(val_tx))  
     print("Donnée mesurée = ", val_tx)
 
 print("Le capteur se calibre, s'il vous plaît attendez...")

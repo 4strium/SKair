@@ -48,6 +48,11 @@ I2C_BLUE_GPIO = const(27)
 pBLUE = machine.Pin(I2C_BLUE_GPIO, machine.Pin.OUT)
 pBLUE.value(0)
 
+# Définition du port valeur du buzzer :
+I2C_BUZZ_GPIO = const(25)
+pBUZZ = machine.Pin(I2C_BUZZ_GPIO, machine.Pin.OUT)
+pBUZZ.value(0)
+
 # Définition du réseau Bluetooth Low Energy :
 nom = 'SKair'
 UUID_UART = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
@@ -78,19 +83,23 @@ while True:
         pGREEN.value(0)
         pBLUE.value(0)
         pRED.value(1)
+        pBUZZ.value(1)
     if 999 >= co2eq_ppm >= 800 :
         pGREEN.value(0)
         pBLUE.value(0)
         pRED.value(0)
+        pBUZZ.value(0)
         pYELLOW.value(1)
     if 799 >= co2eq_ppm >= 600 :
         pBLUE.value(0)
         pRED.value(0)
         pYELLOW.value(0)
+        pBUZZ.value(0)
         pGREEN.value(1)
     if 599 >= co2eq_ppm :
         pRED.value(0)
         pYELLOW.value(0)
         pGREEN.value(0)
+        pBUZZ.value(0)
         pBLUE.value(1)
     time.sleep_ms(10000)

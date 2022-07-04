@@ -6,11 +6,11 @@ import machine
 
 # Définition du cablage (input SGP30) :
 
-# I2C Data (SDA) = GPIO 18 :
-I2C_SCL_GPIO = const(18)
+# I2C Data (SDA) = GPIO 19 :
+I2C_SCL_GPIO = const(19)
 
-# I2C Clock (SCL) = GPIO 19 :
-I2C_SDA_GPIO = const(19)
+# I2C Clock (SCL) = GPIO 18 :
+I2C_SDA_GPIO = const(18)
 
 # Fréquence :
 I2C_FREQ = const(400000)

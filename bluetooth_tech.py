@@ -20,6 +20,7 @@ class ESP32_BLE():
         self.ble.irq(self.ble_irq)
         self.register()
         self.advertiser()
+        print("Connexion Bluetooth Établie !\n")
 
     def connected(self):
         self.led.value(1)
@@ -67,7 +68,7 @@ class ESP32_BLE():
         adv_data = bytearray('\x02\x01\x02') + bytearray((len(name) + 1, 0x09)) + name
         self.ble.gap_advertise(100, adv_data)
         print(adv_data)
-        print("\r\n")
+        print("\n")
                 # adv_data
                 # raw: 0x02010209094553503332424C45
                 # b'\x02\x01\x02\t\tESP32BLE'

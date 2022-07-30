@@ -1,4 +1,4 @@
-from time import *
+import time
 import bluetooth_tech
 import uSGP30
 import sys
@@ -6,11 +6,11 @@ import machine
 
 # Définition du cablage (input SGP30) :
 
-# I2C Data (SDA) = GPIO 19 :
-I2C_SCL_GPIO = const(19)
+# I2C Data (SDA) = GPIO 18 :
+I2C_SCL_GPIO = const(18)
 
-# I2C Clock (SCL) = GPIO 18 :
-I2C_SDA_GPIO = const(18)
+# I2C Clock (SCL) = GPIO 19 :
+I2C_SDA_GPIO = const(19)
 
 # Fréquence :
 I2C_FREQ = const(400000)
@@ -54,27 +54,52 @@ pBUZZ = machine.Pin(I2C_BUZZ_GPIO, machine.Pin.OUT)
 pBUZZ.value(0)
 
 # Définition du réseau Bluetooth Low Energy :
-ble = ESP32_BLE('SKair')
+ble = bluetooth_tech.ESP32_BLE('SKair')
 
-uart = Bleuart(nom, UUID_UART, UUID_TX, UUID_RX)
-uart.close()
 
 # Fonction pour envoyer des données :
 def envoi(val_tx):
-    send(str(val_tx))  
-    print("Donnée mesurée = ", val_tx)
+#    ble.send(str(val_tx))  
+    print("Donnée mesurée : ", val_tx," ppm.")
 
-print("Le capteur se calibre, s'il vous plaît attendez...")
-def crude_progress_bar():
-    sys.stdout.write('.')
-    sys.stdout.flush()
-
-sgp30.start_measurement(crude_progress_bar)
-sys.stdout.write('\n')
+print("Le capteur se calibre, patientez s'il vous plaît...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("10 % ...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("20 % ...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("30 % ...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("40 % ...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("50 % ...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("60 % ...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("70 % ...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("80 % ...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("90 % ...\n")
+sgp30.measure_iaq()
+time.sleep(18)
+print("100 % ...\n")
+sgp30.measure_iaq()
+time.sleep(2)
+print("Calibrage complété avec succès !\n\n")
 
 while True:
     co2eq_ppm, tvoc_ppb = sgp30.measure_iaq()
-    envoi(co2eq_ppm, tvoc_ppb)
+    envoi(co2eq_ppm)
     if co2eq_ppm >= 1000 :
         pYELLOW.value(0)
         pGREEN.value(0)
@@ -99,4 +124,4 @@ while True:
         pGREEN.value(0)
         pBUZZ.value(0)
         pBLUE.value(1)
-    time.sleep_ms(10000)
+    time.sleep(30)

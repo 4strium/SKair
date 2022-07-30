@@ -120,7 +120,7 @@ class SGP30:
             if SGP30_MEASURE_TEST_PASS != self.measure_test():
                 raise RuntimeError("Device failed the on-chip test")
         print(
-            "SGP30 device discovered...\n"
+            "Capteur SGP30 détecté...\n"
             + "I2C address: "
             + str(self.addr)
             + "\n"

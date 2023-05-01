@@ -54,7 +54,11 @@ pBUZZ = machine.Pin(I2C_BUZZ_GPIO, machine.Pin.OUT)
 pBUZZ.value(0)
 
 # Définition du réseau Bluetooth Low Energy :
-ble = bluetooth_tech.ESP32_BLE('SKair')
+#try :
+#    ble = bluetooth_tech.ESP32_BLE('TEST BLUETOOTH')
+#    time.sleep(60*5)
+#except :
+#    pass
 
 
 # Fonction pour envoyer des données :
@@ -63,6 +67,7 @@ def envoi(val_tx):
     print("Donnée mesurée : ", val_tx," ppm.")
 
 print("Le capteur se calibre, patientez s'il vous plaît...\n")
+sgp30.set_absolute_humidity(62)
 sgp30.measure_iaq()
 time.sleep(18)
 print("10 % ...\n")
@@ -97,9 +102,19 @@ sgp30.measure_iaq()
 time.sleep(2)
 print("Calibrage complété avec succès !\n\n")
 
-while True:
+runtime = 120 # Change here the value, to control the runtime of the loop of measurement
+
+timecode = "Temps en secondes;"
+val_lst_co2 = "Valeurs mésurées d'équivalent CO₂ (en ppm) :;"
+val_lst_tvoc = "Composés organiques volatils totaux (en ppb) :;"
+checktime = 0
+
+while checktime < runtime:
     co2eq_ppm, tvoc_ppb = sgp30.measure_iaq()
     envoi(co2eq_ppm)
+    val_lst_co2 += str(co2eq_ppm)+";"
+    val_lst_tvoc += str(tvoc_ppb)+";"
+    timecode += str(checktime)+";"
     if co2eq_ppm >= 1000 :
         pYELLOW.value(0)
         pGREEN.value(0)
@@ -124,4 +139,11 @@ while True:
         pGREEN.value(0)
         pBUZZ.value(0)
         pBLUE.value(1)
-    time.sleep(30)
+    checktime += 2
+    time.sleep(2)
+    
+file = open("rapport.txt", "w")
+file.write(timecode+"\n")
+file.write(val_lst_co2+"\n")
+file.write(val_lst_tvoc+"\n")
+file.close() 

@@ -1,5 +1,5 @@
 import time
-import bluetooth_tech
+from esp_ble_uart import *
 import uSGP30
 import sys
 import machine
@@ -54,53 +54,56 @@ pBUZZ = machine.Pin(I2C_BUZZ_GPIO, machine.Pin.OUT)
 pBUZZ.value(0)
 
 # Définition du réseau Bluetooth Low Energy :
-#try :
-#    ble = bluetooth_tech.ESP32_BLE('TEST BLUETOOTH')
-#    time.sleep(60*5)
-#except :
-#    pass
+nom = 'TEST TEST TEST'
+UUID_UART = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
+UUID_TX = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
+UUID_RX = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
 
+uart = Bleuart(nom, UUID_UART, UUID_TX, UUID_RX)
+uart.close()
 
 # Fonction pour envoyer des données :
-def envoi(val_tx):
-#    ble.send(str(val_tx))  
-    print("Donnée mesurée : ", val_tx," ppm.")
+def envoi(val_tx, val_ty):
+    uart.write("\n\n")
+    uart.write("Valeur mesurée d'équivalent CO₂ : " + str(val_tx) + " ppm.\n")  
+    uart.write("Composés organiques volatils totaux : " + str(val_ty) + " ppb.") 
 
-print("Le capteur se calibre, patientez s'il vous plaît...\n")
 sgp30.set_absolute_humidity(62)
 sgp30.measure_iaq()
-time.sleep(18)
-print("10 % ...\n")
+time.sleep(15)
+uart.write("Le capteur se calibre, patientez s'il vous plaît...\n")
+time.sleep(5)
+uart.write("10 % ...\n")
 sgp30.measure_iaq()
-time.sleep(18)
-print("20 % ...\n")
+time.sleep(5)
+uart.write("20 % ...\n")
 sgp30.measure_iaq()
-time.sleep(18)
-print("30 % ...\n")
+time.sleep(5)
+uart.write("30 % ...\n")
 sgp30.measure_iaq()
-time.sleep(18)
-print("40 % ...\n")
+time.sleep(5)
+uart.write("40 % ...\n")
 sgp30.measure_iaq()
-time.sleep(18)
-print("50 % ...\n")
+time.sleep(5)
+uart.write("50 % ...\n")
 sgp30.measure_iaq()
-time.sleep(18)
-print("60 % ...\n")
+time.sleep(5)
+uart.write("60 % ...\n")
 sgp30.measure_iaq()
-time.sleep(18)
-print("70 % ...\n")
+time.sleep(5)
+uart.write("70 % ...\n")
 sgp30.measure_iaq()
-time.sleep(18)
-print("80 % ...\n")
+time.sleep(5)
+uart.write("80 % ...\n")
 sgp30.measure_iaq()
-time.sleep(18)
-print("90 % ...\n")
+time.sleep(5)
+uart.write("90 % ...\n")
 sgp30.measure_iaq()
-time.sleep(18)
-print("100 % ...\n")
+time.sleep(5)
+uart.write("100 % ...\n")
 sgp30.measure_iaq()
 time.sleep(2)
-print("Calibrage complété avec succès !\n\n")
+uart.write("Calibrage complété avec succès !\n")
 
 runtime = 120 # Change here the value, to control the runtime of the loop of measurement
 
@@ -111,7 +114,7 @@ checktime = 0
 
 while checktime < runtime:
     co2eq_ppm, tvoc_ppb = sgp30.measure_iaq()
-    envoi(co2eq_ppm)
+    envoi(co2eq_ppm, tvoc_ppb)
     val_lst_co2 += str(co2eq_ppm)+";"
     val_lst_tvoc += str(tvoc_ppb)+";"
     timecode += str(checktime)+";"
@@ -146,4 +149,5 @@ file = open("rapport.txt", "w")
 file.write(timecode+"\n")
 file.write(val_lst_co2+"\n")
 file.write(val_lst_tvoc+"\n")
-file.close() 
+file.close()
+raise KeyboardInterrupt

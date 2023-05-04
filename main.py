@@ -54,7 +54,7 @@ pBUZZ = machine.Pin(I2C_BUZZ_GPIO, machine.Pin.OUT)
 pBUZZ.value(0)
 
 # Définition du réseau Bluetooth Low Energy :
-nom = 'TEST TEST TEST'
+nom = 'SKAIR Sensor'
 UUID_UART = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
 UUID_TX = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
 UUID_RX = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
@@ -108,7 +108,7 @@ uart.write("Calibrage complété avec succès !\n")
 runtime = 120 # Change here the value, to control the runtime of the loop of measurement
 
 timecode = "Temps en secondes;"
-val_lst_co2 = "Valeurs mésurées d'équivalent CO₂ (en ppm) :;"
+val_lst_co2 = "Valeurs mesurées d'équivalent CO₂ (en ppm) :;"
 val_lst_tvoc = "Composés organiques volatils totaux (en ppb) :;"
 checktime = 0
 

@@ -105,7 +105,8 @@ sgp30.measure_iaq()
 time.sleep(2)
 uart.write("Calibrage complété avec succès !\n")
 
-runtime = 120 # Change here the value, to control the runtime of the loop of measurement
+runtime = 120 # Changer ici le temps d'exécution total des mesures
+interval = 2 # Changer ici l'intervalle entre chaque mesure
 
 timecode = "Temps en secondes;"
 val_lst_co2 = "Valeurs mesurées d'équivalent CO₂ (en ppm) :;"
@@ -142,8 +143,8 @@ while checktime < runtime:
         pGREEN.value(0)
         pBUZZ.value(0)
         pBLUE.value(1)
-    checktime += 2
-    time.sleep(2)
+    checktime += interval
+    time.sleep(interval)
     
 file = open("rapport.txt", "w")
 file.write(timecode+"\n")
